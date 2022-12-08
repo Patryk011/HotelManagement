@@ -10,25 +10,24 @@
 using namespace std;
 
 
+
+int COUNTER = 0;
+
 struct GuestData { 
 
     int age;
     int fee;
     char firstName[25];
     char lastName[25];
-    string room;
-    string parking;
+    int type;
+    bool parking;
+    struct GuestData* next;
+    struct GuestData* prev;
 
 
 };
 
-struct Facilities {
-    int singleRoom = 10;
-    int doubleRoom = 10;
-    int apartament = 2;
-    int family = 5;
-    int parking = 20;
-};
+struct GuestData* ELEMENTS_LIST = NULL;
 
 struct Guest {
     GuestData data;
@@ -36,7 +35,6 @@ struct Guest {
 };
 
 struct Access {
-    Facilities access;
     Access* next;
 };
 
@@ -45,6 +43,8 @@ typedef Access* pointerA;
 
 
 
+
+void insert_Front(struct GuestData** head, )
 
 
 
