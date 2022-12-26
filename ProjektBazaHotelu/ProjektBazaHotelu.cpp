@@ -12,7 +12,7 @@ struct GuestData {
     string firstName;
     string lastName;
     int type;
-    bool parking;
+    string parking;
     string room;
     bool access;
     struct GuestData* next;
@@ -38,7 +38,7 @@ typedef Access* pointerA;
 
 //void insert_Front(struct GuestData** head, )
 
-void insert_front(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, bool parking, string room, bool access)
+void insert_front(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
 {
     struct GuestData* listData = new GuestData;
     listData->age = age;
@@ -62,7 +62,7 @@ void insert_front(struct GuestData** head, int age, int fee, string firstName, s
     cout << "Dodano element: " << firstName << ", " << lastName << endl;
 }
 
-void insert_after(struct GuestData* prev, int age, int fee, string firstName, string lastName, int type, bool parking, string room, bool access)
+void insert_after(struct GuestData* prev, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
 {
     if (prev == NULL)
     {
@@ -94,7 +94,7 @@ void insert_after(struct GuestData* prev, int age, int fee, string firstName, st
 }
 
 
-void insert_back(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, bool parking, string room, bool access)
+void insert_back(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
 {
     struct GuestData* listData = new GuestData;
     struct GuestData* last = *head;
@@ -149,69 +149,75 @@ void display(struct GuestData* listData)
 }
 
 
-GuestData guestData() {
+void guestData() {
 
     GuestData data;
-    //Facilities access;
-    char o;
-    int w;
-
+   
+    int age;
+    int fee;
+    string firstName;
+    string lastName;
+    int type;
+    string room;
+    bool parking;
+    bool access;
+    string option;
+        
 
     cout << "Podaj wiek: ";
-    cin >> data.age;
+    cin >> age;
 
-    if (data.age < 18)
+    if (age < 18)
         cout << "Aby sie zarejestrowac musisz miec conajmnmiej 18 lat." << endl;
     else
         cout << "Podaj imie: ";
-    cin >> data.firstName;
+    cin >> firstName;
     cout << "Podaj nazwisko";
-    cin >> data.lastName;
+    cin >> lastName;
 
     cout << "Podaj opcje ktora Cie interesuje (1 - Pojedynczy pokoj (150zl), 2 - Pokoj dwuosobowy (250zl), 3 - Apartament (350zl), 4 - Pokoj rodzinny (350zl). : ";
-    cin >> w;
+    cin >> type;
 
-    while (w > 4) {
+    while (type > 4) {
         cout << "Podana opcja nie istnieje, sprobuj jeszcze raz";
+        if (type == 1) {
+            room = "Single";
+            fee += 150;
+        }
 
-        /*if (w == 1 && access.singleRoom != 0) {
-            data.fee += 150;
-            data.room = "single";
-            access.singleRoom -= 1;
+        if (type == 2) {
+            room = "Double";
+            fee += 250;
         }
-        if (w == 2 && access.doubleRoom != 0) {
-            data.fee += 250;
-            data.room = "double";
-            access.doubleRoom -= 1;
+
+        if (type == 3) {
+            room = "Apartament";
+            fee += 350;
         }
-        if (w == 3 && access.apartament != 0) {
-            data.fee += 350;
-            data.room = "apartament";
-            access.apartament -= 1;
+        if (type == 4) {
+            room = "Family";
+            fee += 350;
         }
-        if (w == 4 && access.family != 0) {
-            data.fee += 350;
-            data.room = "family";
-            access.family -= 1;
-        }*/
+
+    
     }
 
     cout << "Czy chcesz rowniez zarezerwowac miejsce parkingowe ? (T/N): ";
 
     do
     {
-        cin >> o;
+        cin >> option;
         
 
-    } while (o != 'T' && o != 'N'); {
+    } while (option != "T" && option != "N"); {
         cout << "Mozesz podac tylko T (tak) lub N (nie). Sprobuj jeszcze raz.";
-        cin >> o;
-        if (o == 'N') {
-            data.parking = "Nie";
+        cin >> option;
+        if (option == "N") {
+            parking = "Nie";
         }
         else {
-            data.parking = "Tak";
-            data.fee += 20;
+            parking = "Tak";
+            fee += 20;
 
         }
 
@@ -219,15 +225,15 @@ GuestData guestData() {
         //Jezeli lista jest psuta to dodajesz pierwszy element listy jako ostatni
         if (ELEMENTS_LIST == NULL)
         {
-            insert_back();
+            insert_back(int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access);
         }
         else
         {
             //w innym przypadku dodajemy nowe elementy z przodu listy
-            insert_front();
+            insert_front(int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access);
         }
 
-        return data;
+        
        
     }
 }
