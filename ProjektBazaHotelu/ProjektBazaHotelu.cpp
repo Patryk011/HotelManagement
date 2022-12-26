@@ -38,7 +38,7 @@ typedef Access* pointerA;
 
 //void insert_Front(struct GuestData** head, )
 
-void insert_front(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
+void insert_front(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, bool parking, string room, bool access)
 {
     struct GuestData* listData = new GuestData;
     listData->age = age;
@@ -94,7 +94,7 @@ void insert_after(struct GuestData* prev, int age, int fee, string firstName, st
 }
 
 
-void insert_back(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
+void insert_back(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, bool parking, string room, bool access)
 {
     struct GuestData* listData = new GuestData;
     struct GuestData* last = *head;
@@ -150,18 +150,20 @@ void display(struct GuestData* listData)
 
 
 void guestData() {
+   // int age, int fee, string firstName, string lastName, int type, string room, bool parking, bool access, string option
 
-    GuestData data;
    
     int age;
-    int fee;
+    int fee=0;
     string firstName;
     string lastName;
     int type;
     string room;
-    bool parking;
-    bool access;
-    string option;
+    bool parking=0;
+    bool access=0;
+    char option;
+
+
         
 
     cout << "Podaj wiek: ";
@@ -204,54 +206,66 @@ void guestData() {
 
     cout << "Czy chcesz rowniez zarezerwowac miejsce parkingowe ? (T/N): ";
 
-    do
-    {
+ 
         cin >> option;
         
 
-    } while (option != "T" && option != "N"); {
-        cout << "Mozesz podac tylko T (tak) lub N (nie). Sprobuj jeszcze raz.";
-        cin >> option;
-        if (option == "N") {
-            parking = "Nie";
-        }
-        else {
-            parking = "Tak";
-            fee += 20;
+   
 
+    if (option == 'T' && option == 'N')
+    {
+        cout << "Dodano miejsce parkingowe" << endl;
+        parking = true;
+    }
+    else
+    {
+        while (option != 'T' && option != 'N')
+        {
+            cout << "Mozesz podac tylko T (tak) lub N (nie). Sprobuj jeszcze raz.";
+            cin >> option;
+            if (option == 'N') {
+                parking = false;
+            }
+            else {
+                parking = true;
+                fee += 20;
+
+            }
         }
+    }
 
 
         //Jezeli lista jest psuta to dodajesz pierwszy element listy jako ostatni
         if (ELEMENTS_LIST == NULL)
         {
-            insert_back(int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access);
+            insert_back(&ELEMENTS_LIST, age, fee,  firstName,lastName, type,  parking,  room,  access);
         }
         else
         {
             //w innym przypadku dodajemy nowe elementy z przodu listy
-            insert_front(int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access);
+            insert_front(&ELEMENTS_LIST,age,  fee,  firstName,  lastName,type, parking,  room, access);
         }
 
         
        
-    }
+    
 }
 
 
 
-void addGuest(pointer* guests, GuestData data) {
-    if ((*guests) == NULL) {
-       pointer newGuest;
-       newGuest = (Guest*)malloc(sizeof(Guest));
-        newGuest->data = data;
-        newGuest->next = NULL;
-        (*guests) = newGuest;
-       }
-        else
-          addGuest(&(*guests)->next, data);
-  }
-        
+//void addGuest(GuestData *data) {
+//    //if ((*guests) == NULL) {
+//    //   pointer newGuest;
+//    //   newGuest = (Guest*)malloc(sizeof(Guest));
+//    //     newGuest->data = data;
+//    //    newGuest->next = NULL;
+//    //    (*guests) = newGuest;
+//    //   }
+//    //    else
+//    //      addGuest(&(*guests)->next, data);
+//    guestData();
+//  }
+//        
 
 void showGuests(pointer guests) {
     if (guests == NULL) {
@@ -283,17 +297,17 @@ void saveGuestToFile(pointer guests) {
     fclose(file);
 }
 
-void readGuestsFromFile(pointer* guests) {
-    FILE* file;
-    int size = sizeof(GuestData);
-    GuestData data;
-    file = fopen("guests.dat", "rb");
-    if (file == NULL)
-        return;
-    while (fread(&data, size, 1, file) == 1)
-        addGuest(&(*guests), data);
-    fclose(file);
-}
+//void readGuestsFromFile(pointer* guests) {
+//    FILE* file;
+//    int size = sizeof(GuestData);
+//    GuestData data;
+//    file = fopen("guests.dat", "rb");
+//    if (file == NULL)
+//        return;
+//    while (fread(&data, size, 1, file) == 1)
+//        addGuest(&(*guests), data);
+//    fclose(file);
+//}
 
 
 
@@ -314,7 +328,7 @@ int main()
 
 
 
-    readGuestsFromFile(&guests);
+    //readGuestsFromFile(&guests);
 
 
 
@@ -336,8 +350,8 @@ int main()
 
         case 1:
         {
-            GuestData gData = guestData();
-            addGuest(&guests, gData);
+            //struct GuestData gData = NULL;
+            guestData();
             break;
         }
         case 2:
