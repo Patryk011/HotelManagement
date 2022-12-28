@@ -2,7 +2,23 @@
 
 using namespace std;
 
+int PARKING_NUMER = 20;
+int PARKING_COUNTER = 0;
 
+int SINGLE_ROOM = 10;
+int SINGLE_COUNTER = 0;
+
+int APARTAMENT_ROOM = 5;
+int APARTAMENT_COUNTER = 0;
+
+int DOUBLE_ROOM = 5;
+int DOUBLE_COUNTER = 0;
+
+int FAMILY_ROOM = 5;
+int FAMILY_COUNTER = 0;
+
+int ROOMS_SUM = SINGLE_ROOM + APARTAMENT_ROOM + DOUBLE_ROOM + FAMILY_ROOM;
+int ROOMS_COUNTER = SINGLE_COUNTER + APARTAMENT_COUNTER + DOUBLE_COUNTER + FAMILY_COUNTER;
 
 int COUNTER = 0;
 
@@ -34,7 +50,11 @@ typedef Guest* pointer;
 typedef Access* pointerA;
 
 
-
+bool CheckParkingAvailable()
+{
+    if (PARKING_COUNTER < PARKING_NUMER) return true;
+    return false;
+}
 
 //void insert_Front(struct GuestData** head, )
 
@@ -149,105 +169,172 @@ void display(struct GuestData* listData)
 }
 
 
-void guestData() {
+bool CheckRoomAvailable(int type)
+{
+    if (type == 1)
+    {
+        if (SINGLE_COUNTER < SINGLE_ROOM) return true;
+        return false;
+    }
+    if (type == 2)
+    {
+        if (DOUBLE_COUNTER < DOUBLE_ROOM) return true;
+        return false;
+    }
+    if (type == 3)
+    {
+        if (APARTAMENT_COUNTER < APARTAMENT_ROOM) return true;
+        return false;
+    }
+    if (type == 4)
+    {
+        if (FAMILY_COUNTER < FAMILY_ROOM) return true;
+        return false;
+    }
+}
+
+ void guestData() {
    // int age, int fee, string firstName, string lastName, int type, string room, bool parking, bool access, string option
 
    
-    int age;
-    int fee=0;
-    string firstName;
-    string lastName;
-    int type;
-    string room;
-    bool parking=0;
-    bool access=0;
-    char option;
+
+     if (ROOMS_COUNTER < ROOMS_SUM)
+     {
+
+         int age;
+         int fee = 0;
+         string firstName;
+         string lastName;
+         int type;
+         string room;
+         bool parking = 0;
+         bool access = 0;
+         char option='N';
 
 
-        
-
-    cout << "Podaj wiek: ";
-    cin >> age;
-
-    if (age < 18)
-        cout << "Aby sie zarejestrowac musisz miec conajmnmiej 18 lat." << endl;
-    else
-        cout << "Podaj imie: ";
-    cin >> firstName;
-    cout << "Podaj nazwisko";
-    cin >> lastName;
-
-    cout << "Podaj opcje ktora Cie interesuje (1 - Pojedynczy pokoj (150zl), 2 - Pokoj dwuosobowy (250zl), 3 - Apartament (350zl), 4 - Pokoj rodzinny (350zl). : ";
-    cin >> type;
-
-    while (type > 4) {
-        cout << "Podana opcja nie istnieje, sprobuj jeszcze raz";
-        if (type == 1) {
-            room = "Single";
-            fee += 150;
-        }
-
-        if (type == 2) {
-            room = "Double";
-            fee += 250;
-        }
-
-        if (type == 3) {
-            room = "Apartament";
-            fee += 350;
-        }
-        if (type == 4) {
-            room = "Family";
-            fee += 350;
-        }
-
-    
-    }
-
-    cout << "Czy chcesz rowniez zarezerwowac miejsce parkingowe ? (T/N): ";
-
- 
-        cin >> option;
-        
-
-   
-
-    if (option == 'T' && option == 'N')
-    {
-        cout << "Dodano miejsce parkingowe" << endl;
-        parking = true;
-    }
-    else
-    {
-        while (option != 'T' && option != 'N')
-        {
-            cout << "Mozesz podac tylko T (tak) lub N (nie). Sprobuj jeszcze raz.";
-            cin >> option;
-            if (option == 'N') {
-                parking = false;
-            }
-            else {
-                parking = true;
-                fee += 20;
-
-            }
-        }
-    }
 
 
-        //Jezeli lista jest psuta to dodajesz pierwszy element listy jako ostatni
-        if (ELEMENTS_LIST == NULL)
-        {
-            insert_back(&ELEMENTS_LIST, age, fee,  firstName,lastName, type,  parking,  room,  access);
-        }
-        else
-        {
-            //w innym przypadku dodajemy nowe elementy z przodu listy
-            insert_front(&ELEMENTS_LIST,age,  fee,  firstName,  lastName,type, parking,  room, access);
-        }
+         cout << "Podaj wiek: ";
+         cin >> age;
 
-        
-       
+         if (age < 18)
+             cout << "Aby sie zarejestrowac musisz miec conajmnmiej 18 lat." << endl;
+         else
+             cout << "Podaj imie: ";
+         cin >> firstName;
+         cout << "Podaj nazwisko: ";
+         cin >> lastName;
+
+         cout << "Podaj opcje ktora Cie interesuje (1 - Pojedynczy pokoj (150zl), 2 - Pokoj dwuosobowy (250zl), 3 - Apartament (350zl), 4 - Pokoj rodzinny (350zl). : ";
+         cin >> type;
+
+      
+
+         while (type > 4) {
+             cout << "Podana opcja nie istnieje, sprobuj jeszcze raz";
+             if (type == 1) {
+                 if (CheckRoomAvailable(1))
+                 {
+                     room = "Single";
+                     fee += 150;
+                     SINGLE_ROOM++;
+                 }
+                 cout << "Pokoje pojedyncze nie sa dostepne" << endl;
+             }
+
+             if (type == 2) {
+                 if (CheckRoomAvailable(2)) {
+                     room = "Double";
+                     fee += 250;
+                     DOUBLE_ROOM++;
+                   }
+             cout << "Pokoje podwójne nie sa dostepne" << endl;
+         }
+
+             if (type == 3) {
+                 if (CheckRoomAvailable(3)) {
+                     room = "Apartament";
+                     fee += 350;
+                     APARTAMENT_ROOM++;
+                 }
+                 cout << "Apartament nie jest dostepny" << endl;
+             }
+             if (type == 4) {
+                 if (CheckRoomAvailable(4)) {
+                     room = "Family";
+                     fee += 350;
+                     FAMILY_ROOM++;
+                 }
+                 cout << "Pokoje rodzinne nie sa dostepne" << endl;
+             }
+
+         }
+
+         cout << "Czy chcesz rowniez zarezerwowac miejsce parkingowe ? (T/N): ";
+
+
+         cin >> option;
+
+
+
+
+         /* if (option == 'T' && option == 'N')
+          {
+              cout << "Dodano miejsce parkingowe" << endl;
+              parking = true;
+          }
+          else
+          {
+              while (option != 'T' && option != 'N')
+              {
+                  cout << "Mozesz podac tylko T (tak) lub N (nie). Sprobuj jeszcze raz.";
+                  cin >> option;
+                  if (option == 'N') {
+                      parking = false;
+                  }
+                  else {
+                      parking = true;
+                      fee += 20;
+
+                  }
+              }
+          }*/
+
+
+         if (option == 'T')
+         {
+             if (CheckParkingAvailable())
+             {
+                 PARKING_COUNTER++;
+             }
+             else
+             {
+                 cout << "Parking nie jest dostepny" << endl;
+                 option = 'N';
+             }
+         }
+         else
+         {
+             cout << "Nie wybrano miejsca parkingowego" << endl;
+         }
+
+         //Jezeli lista jest psuta to dodajesz pierwszy element listy jako ostatni
+         if (ELEMENTS_LIST == NULL)
+         {
+             insert_back(&ELEMENTS_LIST, age, fee, firstName, lastName, type, parking, room, access);
+         }
+         else
+         {
+             //w innym przypadku dodajemy nowe elementy z przodu listy
+             insert_front(&ELEMENTS_LIST, age, fee, firstName, lastName, type, parking, room, access);
+         }
+
+
+     }
+     else
+     {
+         cout << "Wszystkie pokoje sa zajete" << endl;
+      }
     
 }
 
@@ -297,17 +384,17 @@ void saveGuestToFile(pointer guests) {
     fclose(file);
 }
 
-//void readGuestsFromFile(pointer* guests) {
-//    FILE* file;
-//    int size = sizeof(GuestData);
-//    GuestData data;
-//    file = fopen("guests.dat", "rb");
-//    if (file == NULL)
-//        return;
-//    while (fread(&data, size, 1, file) == 1)
-//        addGuest(&(*guests), data);
-//    fclose(file);
-//}
+void readGuestsFromFile(pointer* guests) {
+    FILE* file;
+    int size = sizeof(GuestData);
+    GuestData data;
+    file = fopen("guests.dat", "rb");
+    if (file == NULL)
+        return;
+   /* while (fread(&data, size, 1, file) == 1)
+        addGuest(&(*guests), data);*/
+    fclose(file);
+}
 
 
 
@@ -318,8 +405,6 @@ void saveGuestToFile(pointer guests) {
 int main()
 {
 
-
-
     pointer guests = NULL;
     pointerA access = NULL;
 
@@ -328,55 +413,100 @@ int main()
 
 
 
-    //readGuestsFromFile(&guests);
+    readGuestsFromFile(&guests);
 
 
-
-
-    while (option != 3) {
         cout << "Dziekujemy, ze chcesz zarezerwowac pobyt w naszym hotelu." << endl;
-        cout << "\n 1. Rezerwacja";
-        cout << "\n 2. Wyswietl goœci";
-        cout << "\n 3. Zakoncz program" << endl;
+      cout << "\n 1. Rezerwacja";
+      cout << "\n 2. Wyswietl goœci";
+      cout << "\n 3. Zakoncz program" << endl;
+    
+    while (cin >> option)
+    {
+            cout << "Dziekujemy, ze chcesz zarezerwowac pobyt w naszym hotelu." << endl;
+      cout << "\n 1. Rezerwacja";
+      cout << "\n 2. Wyswietl goœci";
+      cout << "\n 3. Zakoncz program" << endl;
 
 
-        cout << "Wybierz opcje: ";
-        cin >> option;
-        cout << endl;
+      cout << "Wybierz opcje: ";
+      cin >> option;
+      cout << endl;
 
 
 
-        switch (option) {
+      switch (option) {
 
-        case 1:
-        {
-            //struct GuestData gData = NULL;
-            guestData();
-            break;
-        }
-        case 2:
-        {
-            showGuests(guests);
-            break;
-        }
-        case 3:
-        {
-            cout << "Dziekujemy, za korzystanie z naszych us³ug";
-            break;
-        }
-        default: {
-            cout << "Nie ma takiej opcji";
-            break;
-        }
-               system("cls");
-        }
-
-        saveGuestToFile(guests);
-
-
-        return 0;
+      case 1:
+      {
+          guestData();
+          break;
+      }
+      case 2:
+      {
+          showGuests(guests);
+          break;
+      }
+      case 3:
+      {
+          cout << "Dziekujemy, za korzystanie z naszych us³ug";
+          return 0;
+          break;
+      }
+      default: {
+          cout << "Nie ma takiej opcji";
+          break;
+      }
+           
+      }
 
     }
+
+
+    //while (option != 3) {
+    //    cout << "Dziekujemy, ze chcesz zarezerwowac pobyt w naszym hotelu." << endl;
+    //    cout << "\n 1. Rezerwacja";
+    //    cout << "\n 2. Wyswietl goœci";
+    //    cout << "\n 3. Zakoncz program" << endl;
+
+
+    //    cout << "Wybierz opcje: ";
+    //    cin >> option;
+    //    cout << endl;
+
+
+
+    //    switch (option) {
+
+    //    case 1:
+    //    {
+    //        
+    //        guestData();
+    //        break;
+    //    }
+    //    case 2:
+    //    {
+    //        showGuests(guests);
+    //        break;
+    //    }
+    //    case 3:
+    //    {
+    //        cout << "Dziekujemy, za korzystanie z naszych us³ug";
+    //        break;
+    //    }
+    //    default: {
+    //        cout << "Nie ma takiej opcji";
+    //        break;
+    //    }
+    //           system("cls");
+    //    }
+
+    //    saveGuestToFile(guests);
+
+
+    //    return 0;
+
+    //}
 
 }
 

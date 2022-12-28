@@ -1,2 +1,3 @@
 ﻿  ProjektBazaHotelu.cpp
-  ProjektBazaHotelu.vcxproj -> C:\Users\Adam\Documents\GitHub\HotelManagement\x64\Debug\ProjektBazaHotelu.exe
+C:\Users\Papryk\Desktop\HotelManagement\ProjektBazaHotelu\ProjektBazaHotelu.cpp(194): warning C4715: 'CheckRoomAvailable': not all control paths return a value
+  ProjektBazaHotelu.vcxproj -> C:\Users\Papryk\Desktop\HotelManagement\x64\Debug\ProjektBazaHotelu.exe
