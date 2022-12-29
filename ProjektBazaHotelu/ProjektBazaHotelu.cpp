@@ -1,4 +1,8 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -278,27 +282,6 @@ bool CheckRoomAvailable(int type)
 
 
 
-         /* if (option == 'T' && option == 'N')
-          {
-              cout << "Dodano miejsce parkingowe" << endl;
-              parking = true;
-          }
-          else
-          {
-              while (option != 'T' && option != 'N')
-              {
-                  cout << "Mozesz podac tylko T (tak) lub N (nie). Sprobuj jeszcze raz.";
-                  cin >> option;
-                  if (option == 'N') {
-                      parking = false;
-                  }
-                  else {
-                      parking = true;
-                      fee += 20;
-
-                  }
-              }
-          }*/
 
 
          if (option == 'T')
@@ -340,60 +323,61 @@ bool CheckRoomAvailable(int type)
 
 
 
-//void addGuest(GuestData *data) {
-//    //if ((*guests) == NULL) {
-//    //   pointer newGuest;
-//    //   newGuest = (Guest*)malloc(sizeof(Guest));
-//    //     newGuest->data = data;
-//    //    newGuest->next = NULL;
-//    //    (*guests) = newGuest;
-//    //   }
-//    //    else
-//    //      addGuest(&(*guests)->next, data);
-//    guestData();
-//  }
-//        
 
-void showGuests(pointer guests) {
-    if (guests == NULL) {
-        cout << "W bazie nie ma zadnych gosci";
+
+
+void saveToFile(struct GuestData* listData)
+{
+
+    ofstream myfile;
+    myfile.open("example.txt");
+
+    struct GuestData* last;
+
+    while (listData != NULL)
+    {
+
+        myfile << "Imie: " << listData->firstName << endl;
+        myfile << "Nazwisko: " << listData->lastName << endl;
+        myfile << "Wiek: " << listData->age << endl;
+        myfile << "Kwota do zaplaty: " << listData->fee << endl;
+        myfile << "Typ: " << listData->type << endl;
+        myfile << "Czy parking?: " << listData->parking << endl;
+        myfile << "Pokoj: " << listData->room << endl;
+        myfile << "Dostepny?: " << listData->access << endl;
+
+        last = listData;
+        listData = listData->next;
     }
-    while (guests != NULL) {
-        cout << guests->data.firstName << " " << guests->data.lastName;
-        cout << "Pokoj: " << guests -> data.room;
-        cout << "Oplata: " << guests -> data.fee;
-        cout << "Parking: " << guests->data.parking;
+
+    if (listData == NULL)
+    {
+        cout << "Brak elementow do wyswietlenia" << endl;
+        return;
     }
+
+    myfile.close();
 }
 
 
+void openFile()
+{
+    string s;
 
+    ifstream myfile;
+    myfile.open("example.txt");
 
-
-void saveGuestToFile(pointer guests) {
-
-    FILE* file;
-    int size = sizeof(GuestData);
-    file = fopen("guests.dat", "wb");
-    if (file == NULL)
-        return;
-    while (guests != NULL) {
-        fwrite(&(guests->data), size, 1, file);
-        guests = guests->next;
+    if (myfile.is_open())
+    {
+        while (getline(myfile, s))
+        {
+            cout << s << endl;
+        }
     }
-    fclose(file);
-}
-
-void readGuestsFromFile(pointer* guests) {
-    FILE* file;
-    int size = sizeof(GuestData);
-    GuestData data;
-    file = fopen("guests.dat", "rb");
-    if (file == NULL)
-        return;
-   /* while (fread(&data, size, 1, file) == 1)
-        addGuest(&(*guests), data);*/
-    fclose(file);
+    else
+    {
+        cout << "Problem z plikiem" << endl;
+    }
 }
 
 
@@ -413,13 +397,12 @@ int main()
 
 
 
-    readGuestsFromFile(&guests);
+    //readGuestsFromFile(&guests);
 
 
         cout << "Dziekujemy, ze chcesz zarezerwowac pobyt w naszym hotelu." << endl;
-      cout << "\n 1. Rezerwacja";
-      cout << "\n 2. Wyswietl goœci";
-      cout << "\n 3. Zakoncz program" << endl;
+        
+    
     
     while (cin >> option)
     {
@@ -440,11 +423,13 @@ int main()
       case 1:
       {
           guestData();
+          saveToFile(ELEMENTS_LIST);
           break;
       }
       case 2:
       {
-          showGuests(guests);
+          //showGuests(guests);
+          openFile();
           break;
       }
       case 3:
@@ -460,53 +445,13 @@ int main()
            
       }
 
+      
+
+
     }
 
 
-    //while (option != 3) {
-    //    cout << "Dziekujemy, ze chcesz zarezerwowac pobyt w naszym hotelu." << endl;
-    //    cout << "\n 1. Rezerwacja";
-    //    cout << "\n 2. Wyswietl goœci";
-    //    cout << "\n 3. Zakoncz program" << endl;
-
-
-    //    cout << "Wybierz opcje: ";
-    //    cin >> option;
-    //    cout << endl;
-
-
-
-    //    switch (option) {
-
-    //    case 1:
-    //    {
-    //        
-    //        guestData();
-    //        break;
-    //    }
-    //    case 2:
-    //    {
-    //        showGuests(guests);
-    //        break;
-    //    }
-    //    case 3:
-    //    {
-    //        cout << "Dziekujemy, za korzystanie z naszych us³ug";
-    //        break;
-    //    }
-    //    default: {
-    //        cout << "Nie ma takiej opcji";
-    //        break;
-    //    }
-    //           system("cls");
-    //    }
-
-    //    saveGuestToFile(guests);
-
-
-    //    return 0;
-
-    //}
+  
 
 }
 
