@@ -39,7 +39,7 @@ struct GuestData {
     struct GuestData* prev;
 };
 
-struct GuestData* ELEMENTS_LIST = NULL;
+struct GuestData* ELEMENTS_LIST = 0;
 
 struct Guest {
     GuestData data;
@@ -62,7 +62,7 @@ bool CheckParkingAvailable()
 
 //void insert_Front(struct GuestData** head, )
 
-void insert_front(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, bool parking, string room, bool access)
+void insert_front(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
 {
     struct GuestData* listData = new GuestData;
     listData->age = age;
@@ -74,9 +74,9 @@ void insert_front(struct GuestData** head, int age, int fee, string firstName, s
     listData->room = room;
     listData->access = access;
     listData->next = (*head);
-    listData->prev = NULL;
+    listData->prev = 0;
 
-    if ((*head) != NULL)
+    if ((*head) != 0)
     {
         (*head)->prev = listData;
         (*head) = listData;
@@ -88,7 +88,7 @@ void insert_front(struct GuestData** head, int age, int fee, string firstName, s
 
 void insert_after(struct GuestData* prev, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
 {
-    if (prev == NULL)
+    if (prev == 0)
     {
         cout << "Brakuje ostatniego elementu :)" << endl;
         return;
@@ -108,7 +108,7 @@ void insert_after(struct GuestData* prev, int age, int fee, string firstName, st
     prev->next = listData;
     listData->prev = prev;
 
-    if (listData->next!=NULL)
+    if (listData->next!=0)
     {
         listData->next->prev = listData;
     }
@@ -118,7 +118,7 @@ void insert_after(struct GuestData* prev, int age, int fee, string firstName, st
 }
 
 
-void insert_back(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, bool parking, string room, bool access)
+void insert_back(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
 {
     struct GuestData* listData = new GuestData;
     struct GuestData* last = *head;
@@ -131,11 +131,11 @@ void insert_back(struct GuestData** head, int age, int fee, string firstName, st
     listData->parking = parking;
     listData->room = room;
     listData->access = access;
-    listData->next = NULL;
+    listData->next = 0;
 
-    if ((*head) == NULL)
+    if ((*head) == 0)
     {
-        listData->prev = NULL;
+        listData->prev = 0;
         *head = listData;
         return;
     }
@@ -150,7 +150,7 @@ void display(struct GuestData* listData)
 {
     struct GuestData* last;
 
-    while (listData != NULL)
+    while (listData != 0)
     {
         cout << "Imie: " << listData->firstName << endl;
         cout << "Nazwisko: " << listData->lastName << endl;
@@ -165,7 +165,7 @@ void display(struct GuestData* listData)
         listData = listData->next;
     }
 
-    if (listData == NULL)
+    if (listData == 0)
     {
         cout << "Brak elementow do wyswietlenia" << endl;
         return;
@@ -211,7 +211,7 @@ bool CheckRoomAvailable(int type)
          string lastName;
          int type;
          string room;
-         bool parking = 0;
+         string parking;
          bool access = 0;
          char option='N';
 
@@ -252,7 +252,7 @@ bool CheckRoomAvailable(int type)
                      fee += 250;
                      DOUBLE_ROOM++;
                    }
-             cout << "Pokoje podwójne nie sa dostepne" << endl;
+             cout << "Pokoje podwï¿½jne nie sa dostepne" << endl;
          }
 
              if (type == 3) {
@@ -289,10 +289,13 @@ bool CheckRoomAvailable(int type)
              if (CheckParkingAvailable())
              {
                  PARKING_COUNTER++;
+                 parking = "Tak";
+                 
              }
              else
              {
                  cout << "Parking nie jest dostepny" << endl;
+                 parking = "Nie";
                  option = 'N';
              }
          }
@@ -302,7 +305,7 @@ bool CheckRoomAvailable(int type)
          }
 
          //Jezeli lista jest psuta to dodajesz pierwszy element listy jako ostatni
-         if (ELEMENTS_LIST == NULL)
+         if (ELEMENTS_LIST == 0)
          {
              insert_back(&ELEMENTS_LIST, age, fee, firstName, lastName, type, parking, room, access);
          }
@@ -334,7 +337,7 @@ void saveToFile(struct GuestData* listData)
 
     struct GuestData* last;
 
-    while (listData != NULL)
+    while (listData != 0)
     {
 
         myfile << "Imie: " << listData->firstName << endl;
@@ -350,7 +353,7 @@ void saveToFile(struct GuestData* listData)
         listData = listData->next;
     }
 
-    if (listData == NULL)
+    if (listData == 0)
     {
         cout << "Brak elementow do wyswietlenia" << endl;
         return;
@@ -389,8 +392,8 @@ void openFile()
 int main()
 {
 
-    pointer guests = NULL;
-    pointerA access = NULL;
+    pointer guests = 0;
+    pointerA access = 0;
 
 
     int option = 0;
@@ -400,15 +403,15 @@ int main()
     //readGuestsFromFile(&guests);
 
 
-        cout << "Dziekujemy, ze chcesz zarezerwowac pobyt w naszym hotelu." << endl;
+        cout << "Dziekujemy, ze chcesz zarezerwowac pobyt w naszym hotelu. Kliknij 1, aby kontynuowac" << endl;
         
     
     
     while (cin >> option)
     {
-            cout << "Dziekujemy, ze chcesz zarezerwowac pobyt w naszym hotelu." << endl;
+    
       cout << "\n 1. Rezerwacja";
-      cout << "\n 2. Wyswietl goœci";
+      cout << "\n 2. Wyswietl goï¿½ci";
       cout << "\n 3. Zakoncz program" << endl;
 
 
@@ -434,7 +437,7 @@ int main()
       }
       case 3:
       {
-          cout << "Dziekujemy, za korzystanie z naszych us³ug";
+          cout << "Dziekujemy, za korzystanie z naszych usï¿½ug";
           return 0;
           break;
       }
