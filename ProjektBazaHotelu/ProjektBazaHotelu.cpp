@@ -34,7 +34,6 @@ struct GuestData {
     int type;
     string parking;
     string room;
-    bool access;
     struct GuestData* next;
     struct GuestData* prev;
 };
@@ -62,17 +61,15 @@ bool CheckParkingAvailable()
 
 //void insert_Front(struct GuestData** head, )
 
-void insert_front(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
+void insert_front(struct GuestData** head, int age, int fee, string firstName, string lastName, string parking, string room)
 {
     struct GuestData* listData = new GuestData;
     listData->age = age;
     listData->fee = fee;
     listData->firstName = firstName;
     listData->lastName = lastName;
-    listData->type = type;
     listData->parking = parking;
     listData->room = room;
-    listData->access = access;
     listData->next = (*head);
     listData->prev = 0;
 
@@ -86,7 +83,7 @@ void insert_front(struct GuestData** head, int age, int fee, string firstName, s
     cout << "Dodano element: " << firstName << ", " << lastName << endl;
 }
 
-void insert_after(struct GuestData* prev, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
+void insert_after(struct GuestData* prev, int age, int fee, string firstName, string lastName, string room, string parking)
 {
     if (prev == 0)
     {
@@ -99,10 +96,8 @@ void insert_after(struct GuestData* prev, int age, int fee, string firstName, st
     listData->fee = fee;
     listData->firstName = firstName;
     listData->lastName = lastName;
-    listData->type = type;
     listData->parking = parking;
     listData->room = room;
-    listData->access = access;
     
     listData->next = prev->next;
     prev->next = listData;
@@ -118,7 +113,7 @@ void insert_after(struct GuestData* prev, int age, int fee, string firstName, st
 }
 
 
-void insert_back(struct GuestData** head, int age, int fee, string firstName, string lastName, int type, string parking, string room, bool access)
+void insert_back(struct GuestData** head, int age, int fee, string firstName, string lastName, string room, string parking)
 {
     struct GuestData* listData = new GuestData;
     struct GuestData* last = *head;
@@ -127,10 +122,8 @@ void insert_back(struct GuestData** head, int age, int fee, string firstName, st
     listData->fee = fee;
     listData->firstName = firstName;
     listData->lastName = lastName;
-    listData->type = type;
     listData->parking = parking;
     listData->room = room;
-    listData->access = access;
     listData->next = 0;
 
     if ((*head) == 0)
@@ -159,7 +152,6 @@ void display(struct GuestData* listData)
         cout << "Typ: " << listData->type << endl;
         cout << "Czy parking?: " << listData->parking << endl;
         cout << "Pokoj: " << listData->room << endl;
-        cout << "Dostepny?: " << listData->access << endl;
 
         last = listData;
         listData = listData->next;
@@ -212,7 +204,6 @@ bool CheckRoomAvailable(int type)
          int type;
          string room;
          string parking;
-         bool access = 0;
          char option='N';
 
 
@@ -307,12 +298,12 @@ bool CheckRoomAvailable(int type)
          //Jezeli lista jest psuta to dodajesz pierwszy element listy jako ostatni
          if (ELEMENTS_LIST == 0)
          {
-             insert_back(&ELEMENTS_LIST, age, fee, firstName, lastName, type, parking, room, access);
+             insert_back(&ELEMENTS_LIST, age, fee, firstName, lastName, room, parking);
          }
          else
          {
              //w innym przypadku dodajemy nowe elementy z przodu listy
-             insert_front(&ELEMENTS_LIST, age, fee, firstName, lastName, type, parking, room, access);
+             insert_front(&ELEMENTS_LIST, age, fee, firstName, lastName, room, parking);
          }
 
 
@@ -344,10 +335,9 @@ void saveToFile(struct GuestData* listData)
         myfile << "Nazwisko: " << listData->lastName << endl;
         myfile << "Wiek: " << listData->age << endl;
         myfile << "Kwota do zaplaty: " << listData->fee << endl;
-        myfile << "Typ: " << listData->type << endl;
         myfile << "Czy parking?: " << listData->parking << endl;
         myfile << "Pokoj: " << listData->room << endl;
-        myfile << "Dostepny?: " << listData->access << endl;
+        
 
         last = listData;
         listData = listData->next;
